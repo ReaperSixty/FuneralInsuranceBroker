@@ -1,0 +1,35 @@
+div(id = "chapter-nav")
+  h4(style = "text-align:center") Menu
+  ul
+    li
+      a(href="#", id="master" class="chapter-link") Master
+    li 
+      a(href="#", id="dependants" class="chapter-link") Dependants
+    li 
+      a(href="#", id="claims" class="chapter-link") Claims
+      li 
+        a(href="#", id="search" class="chapter-link") Search Member
+
+div(id="chapter")
+  h2(id="title")
+  p(id="content")
+  
+script.
+  var app = require("./lib/app");
+  var showChapter = function(id){
+    app.emit("chapter-selected", id);
+  };
+  app.on("chapter-rendered", function(chapter){
+    $("#title").html(chapter.title);
+    $("#content").html(chapter.body);
+    wireEvents();
+  });
+  $(function(){
+    showChapter("master");
+    $(".chapter-link").on("click", function(ev){
+      ev.preventDefault();
+      showChapter(this.id);
+    });
+  });
+
+  

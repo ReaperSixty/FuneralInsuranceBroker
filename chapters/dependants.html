@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Test</title>
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body style="width:100%">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="container">
+
+        <ol class="breadcrumb">
+          <li><a href="#">Menu</a></li>
+          <li><a href="#">Dependants</a></li>
+        </ol>
+          <div class=" well" style="width:1100px">
+            <div class="row">
+              <form>
+                <div class="col-lg-12">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-4 form-group">
+                      <label>Employee Number</label>
+                      <input type="text" placeholder="Enter Employee Number" id="employeeid" class="form-control" style="width:250px">
+                    </div>
+                    <div class="col-md-4 form-group">
+                      <label>Title</label>
+                      <select class="form-control" id="title1"  style="width:250px">
+                        <option>-- Select Title --</option>
+                        <option>Mr</option>
+                        <option>Mrs</option>
+                        <option>Miss</option>
+                        <option>Dr</option>
+                        <option>Prof</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4 form-group">
+                      <label>First Name</label>
+                      <input type="text" placeholder="Enter First Name Here.." id="firstname" class="form-control" style="width:250px">
+                    </div>
+                  </div>
+                  <div class="row">
+                  <div class="col-md-4 form-group">
+                    <label>Surname</label>
+                    <input type="text" placeholder="Enter Surname Here..." id="surname" class="form-control" style="width:250px">
+                  </div>
+                  <div class="col-md-4 form-group">
+                    <label>Birth Date (yyyy-mm-dd)</label>
+                  <input type="text" placeholder="Enter Birth Date Here..." id="birthdate" class="form-control" style="width:250px">
+                  </div>
+                  <div class="col-md-4 form-group">
+                    <label>Relationship</label>
+                    <select class="form-control" id="relationship" style="width:250px">
+                      <option>-- Select Relationship --</option>
+                      <option>Father</option>
+                      <option>Mother</option>
+                      <option>Brother</option>
+                      <option>Sister</option>
+                      <option>Father in Law</option>
+                      <option>Mother in Law</option>
+                      <option>Grand Father</option>
+                      <option>Grand Mother</option>
+                    </select>
+                  </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 form-group">
+                      <label>Form Number</label>
+                      <input type="text" placeholder="Enter Form Number Here.." id="formno" class="form-control" style="width:250px">
+                    </div>
+                    </div>
+                    </form>
+                    <div class="col-md-6 form-group">
+                    <button type="button" class="btn btn-info" id="createbtn" style="float:right">Submit</button>
+                      </div>
+                </div>
+
+                </div>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+<script>var $ = jQuery = require("jquery");</script>
+<script type="text/javascript">
+  $('#createbtn').click(function() {
+  var employeeid = document.getElementById('employeeid').value;
+  var title = $('#title1 :selected').text();
+  var firstname = document.getElementById('firstname').value;
+  var surname = document.getElementById('surname').value;
+  var birthdate = document.getElementById('birthdate').value;
+  var relationship = $('#relationship :selected').text();
+  var formno = document.getElementById('formno').value;
+  var data = {
+   'employeeid': employeeid,
+   'title': title,
+   'firstname': firstname,
+   'surname': surname,
+   'birthdate': birthdate,
+   'relationship': relationship,
+   'formno': formno
+  };
+
+  var jsonData = JSON.stringify( data );
+  $.ajax({
+     url: "http://localhost:54175/RestServiceImpl.svc/adddependant?employeeid=" + employeeid + "&title=" + title + "&firstname=" + firstname + "&surname=" + surname +"&birthdate=" + birthdate + "&relationship=" + relationship +"&formno=" +formno,
+     type: 'POST',
+     async: true,
+     contentType: false,
+     processData: false,
+     cache: false,
+     data: jsonData,    //-------------Pass the data here.
+     beforeSend: function(settings){},
+     success: function(data){
+       location.reload();
+     },
+     error: function(er){}
+  });
+});
+</script><!--end of create function-->
+</html>

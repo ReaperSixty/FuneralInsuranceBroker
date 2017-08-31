@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Test</title>
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <style media="screen">
+    .filterable {
+      margin-top: 15px;
+    }
+
+    .filterable .panel-heading .pull-right {
+      margin-top: -20px;
+    }
+
+    .filterable .filters input[disabled] {
+      background-color: transparent;
+      border: none;
+      cursor: auto;
+      box-shadow: none;
+      padding: 0;
+      height: auto;
+    }
+
+    .filterable .filters input[disabled]::-webkit-input-placeholder {
+      color: #333;
+    }
+
+    .filterable .filters input[disabled]::-moz-placeholder {
+      color: #333;
+    }
+
+    .filterable .filters input[disabled]:-ms-input-placeholder {
+      color: #333;
+    }
+  </style>
+</head>
+<body style="width:100%">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li><a href="#">Menu</a></li>
+          <li><a href="#">Master</a></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="container">
+        <div class="panel panel-primary filterable">
+          <div class="panel-heading">
+            <h3 class="panel-title">Master List</h3>
+            <div class="pull-Left">
+              
+            </div>
+          </div>
+          <table class="table table-bordered table-hover table-striped table-condensed" id="search">
+            <thead>
+              <tr>
+                <th>Member Number</th>
+                <th>Member Name</th>
+                <th>Member Surname </th>
+                <th>Address</th>
+                <th>Email Address</th>
+                <th>Edit | Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+    </div>
+  </div>
+</body>
+<script>
+  var $ = jQuery = require("jquery");
+</script>
+
+<script type="text/javascript">
+  $('#ajax').ready(function() {
+    var response = null;
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "http://localhost:54175/RestServiceImpl.svc/members",
+      success: function(data) {
+        data.forEach(function(item) {
+          $('tbody').append('<tr><td>' + item.MemberNumber + '</td><td>' + item.MemberName + '</td><td>' + item.MemberSurname + '</td><td>' + item.MemberAddress + '</td><td>' + item.MemberEmail +
+            '</td><td style="text-align: center"><a href="#"><i class="glyphicon glyphicon-cog"></i></a> | <a href="#"><i class="glyphicon glyphicon-ban-circle" style="color:red"></i></a></td></tr>')
+        });
+      }
+    })
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    $('.filterable .btn-filter').click(function() {
+      var $panel = $(this).parents('.filterable'),
+        $filters = $panel.find('.filters input'),
+        $tbody = $panel.find('.table tbody');
+      if ($filters.prop('disabled') == true) {
+        $filters.prop('disabled', false);
+        $filters.first().focus();
+      } else {
+        $filters.val('').prop('disabled', true);
+        $tbody.find('.no-result').remove();
+        $tbody.find('tr').show();
+      }
+    });
+
+    $('.filterable .filters input').keyup(function(e) {
+      /* Ignore tab key */
+      var code = e.keyCode || e.which;
+      if (code == '9') return;
+      /* Useful DOM data and selectors */
+      var $input = $(this),
+        inputContent = $input.val().toLowerCase(),
+        $panel = $input.parents('.filterable'),
+        column = $panel.find('.filters th').index($input.parents('th')),
+        $table = $panel.find('.table'),
+        $rows = $table.find('tbody tr');
+      /* Dirtiest filter function ever ;) */
+      var $filteredRows = $rows.filter(function() {
+        var value = $(this).find('td').eq(column).text().toLowerCase();
+        return value.indexOf(inputContent) === -1;
+      });
+      /* Clean previous no-result if exist */
+      $table.find('tbody .no-result').remove();
+      /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+      $rows.show();
+      $filteredRows.hide();
+      /* Prepend no-result row if all rows are filtered */
+      if ($filteredRows.length === $rows.length) {
+        $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'));
+      }
+    });
+  });
+</script>
+
+</html>

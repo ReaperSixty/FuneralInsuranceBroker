@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Test</title>
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+
+<body style="width:100%">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li><a href="#">Menu</a></li>
+          <li><a href="#">Rates</a></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="">
+    <div class="row">
+      <form>
+        <div class="col-lg-12">
+          <div class="container">
+            <div class="panel panel-primary filterable">
+              <div class="panel-heading">
+                <h3 class="panel-title">Claims</h3>
+                <div class="pull-Left">
+                  <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                </div>
+              </div>
+            <table class="table table-bordered table-hover table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>Age</th>
+                  <th>First</th>
+                  <th>Second</th>
+                  <th>Third</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+
+                </tr>
+              </tbody>
+            </table>
+              </div>
+            <form>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+    </div>
+  </div>
+
+</body>
+<script>
+  var $ = jQuery = require("jquery");
+</script>
+<script type="text/javascript">
+  $('#ajax').ready(function() {
+    var response = null;
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "http://localhost:54175/RestServiceImpl.svc/getrates",
+      success: function(data) {
+        data.forEach(function(item) {
+          $('tbody').append('<tr><td>' + item.Age + '</td><td>' + item.First + '</td><td>' + item.Second + '</td><td>' + item.Third +
+            '</td><td style="text-align: center"><a href="#"><i class="glyphicon glyphicon-cog"></i></a> | <a href="#"><i class="glyphicon glyphicon-ban-circle" style="color:red"></i></a></td></tr>')
+        });
+
+      }
+    })
+  });
+</script>
+
+</html>
